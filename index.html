@@ -88,6 +88,7 @@
             transition: opacity 1s;
             opacity: 1;
             z-index: 10;
+            cursor: pointer;
         }
         .glow {
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
@@ -163,15 +164,20 @@
         }
 
         function hideOverlay() {
-            document.getElementById('overlay').style.opacity = 0;
-            setTimeout(() => document.getElementById('overlay').style.display = 'none', 1000);
+            const overlay = document.getElementById('overlay');
+            overlay.style.opacity = 0;
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Allow scrolling after overlay is removed
+                document.getElementById('text').style.opacity = 1; // Show text after overlay is removed
+                typeText(document.getElementById('text'), getRandomPhrase(), 0); // Start typing effect
+            }, 1000); // Wait 1 second for the fade out to complete
         }
 
         window.onload = () => {
-            const textElement = document.getElementById('text');
-            typeText(textElement, getRandomPhrase(), 0);
+            const overlay = document.getElementById('overlay');
             document.getElementById('themeSwitch').addEventListener('change', toggleTheme);
-            document.getElementById('overlay').addEventListener('click', hideOverlay);
+            overlay.addEventListener('click', hideOverlay);
         };
     </script>
 </body>
