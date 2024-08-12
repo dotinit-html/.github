@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>__init__</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            transition: background-color 0.5s, color 0.5s;
+            overflow: hidden;
+            position: relative;
+        }
+        #text {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20%;
+            position: relative;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            transition: opacity 1s;
+            opacity: 1;
+            z-index: 10;
+        }
+        .glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        .typing {
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid rgba(255, 255, 255, 0.75);
+            animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(255, 255, 255, 0.75); }
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay">
+        <div class="typing glow">Click to enter...</div>
+    </div>
+    <div id="text"></div>
+    <div class="container">
+        <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <script>
+        // Define the phrases with a comprehensive list of programming languages
+        const phrases = [
+            "__init__.py", "__init__.js", "__init__.cpp", "__init__.java", "__init__.rb",
+            "__init__.php", "__init__.lua", "__init__.luau", "__init__.cs", "__init__.hxl",
+            "__init__.glsl", "__init__.ts", "__init__.sh", "__init__.swift", "__init__.pl",
+            "__init__.hexl", "__init__.c", "__init__.go", "__init__.r", "__init__.scala",
+            "__init__.perl", "__init__.vhdl", "__init__.ada", "__init__.fortran", "__init__.matlab",
+            "__init__.d", "__init__.sql", "__init__.clojure", "__init__.kotlin", "__init__.rust",
+            "__init__.julia", "__init__.haskell", "__init__.ocaml", "__init__.sml", "__init__.haxe",
+            "__init__.actionscript", "__init__.smalltalk", "__init__.cobol", "__init__.ml", "__init__.eiffel",
+            "__init__.tcl", "__init__.lisp", "__init__.scheme", "__init__.erlang", "__init__.prolog",
+            "__init__.mercury", "__init__.fsharp", "__init__.dylan", "__init__.brainfuck"
+        ];
+
+        function getRandomPhrase() {
+            return phrases[Math.floor(Math.random() * phrases.length)];
+        }
+
+        function typeText(element, text, index) {
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
+                setTimeout(() => typeText(element, text, index + 1), 100);
+            } else {
+                setTimeout(() => fadeOutText(element), 3000); // After 3 seconds, fade out the text
+            }
+        }
+
+        function fadeOutText(element) {
+            element.style.opacity = 0;
+            setTimeout(() => {
+                element.innerHTML = '';
+                element.style.opacity = 1; // Reset opacity for next phrase
+                typeText(element, getRandomPhrase(), 0); // Type a new phrase
+            }, 1000); // Wait 1 second for the fade out to complete
+        }
+
+        function toggleTheme() {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            document.body.style.backgroundColor = isDarkMode ? 'black' : 'white';
+            document.body.style.color = isDarkMode ? 'white' : 'black';
+        }
+
+        function hideOverlay() {
+            document.getElementById('overlay').style.opacity = 0;
+            setTimeout(() => document.getElementById('overlay').style.display = 'none', 1000);
+        }
+
+        window.onload = () => {
+            const textElement = document.getElementById('text');
+            typeText(textElement, getRandomPhrase(), 0);
+            document.getElementById('themeSwitch').addEventListener('change', toggleTheme);
+            document.getElementById('overlay').addEventListener('click', hideOverlay);
+        };
+    </script>
+</body>
+</html>
